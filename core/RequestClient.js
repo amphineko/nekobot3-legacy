@@ -59,11 +59,12 @@ function doRequest(options, postform, callback) {
 
 parseResponse = function(body, callback) {
 	try {
-		callback(JSON.parse(body), null);
+		var pack = JSON.parse(body);
 	} catch (error) {
 		log.error('RequestClient 處理JSON打包時遇到錯誤: ' + error);
 		callback(null, error);
 	}
+	callback(pack, null);
 }
 
 module.exports = {

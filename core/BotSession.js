@@ -4,15 +4,17 @@
 	@package  pw.futa.nekobot.core.session
 	@author   Amphineko (Naoki Rinmous)
 	
-	@modification-increment  #6 (03/13/2014)
+	@modification-increment  #4 (03/09/2014)
 */
 
 
 var Adapter = require('./EventAdapter');
 var api = require('./qqapi2');
 var Bootloader = require('./../Bootloader');
+var fs = require('fs');
+var Infocache = require('./Infocache');
 var log = new (require('Log'))('debug');
-var Pluginman  = require('./Pluginman');
+var Pluginman = require('./Pluginman');
 
 var BotSession = function (_auth, _cookies, _config) {
 	this.auth = _auth;
@@ -31,8 +33,11 @@ BotSession.prototype.start = function () {
 	
 	log.info('<BotSession> 開始讀入好友列表');
 	Pluginman.loadPluginList(that.config.plugins);
+	Infocache.setSession(that);
+	console.log(Infocache.getFriend(4271114083));
 	api.poll2(that.auth, function (ret, error) {
 		poll_handle(that, ret, error);
+		console.log(Infocache.getFriend(4271114083));
 	});
 }
 
