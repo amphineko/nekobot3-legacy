@@ -34,10 +34,8 @@ BotSession.prototype.start = function () {
 	log.info('<BotSession> 開始讀入好友列表');
 	Pluginman.loadPluginList(that.config.plugins);
 	Infocache.setSession(that);
-	console.log(Infocache.getFriend(4271114083));
 	api.poll2(that.auth, function (ret, error) {
 		poll_handle(that, ret, error);
-		console.log(Infocache.getFriend(4271114083));
 	});
 }
 

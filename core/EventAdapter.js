@@ -1,30 +1,34 @@
+var Infocache = require('./Infocache');
 var log = new (require('Log'))('debug');
 
 function createMessage(session, event) {
 	var value = event.value;
 	var msg = {
-		type: value.group_code ? 'group' : 'friend',
-		
+		type: ({ 'message': 'friend', 'group_message': 'group' })[event.poll_type],
+
+		id: value.msg_id,
 		content: value.content.slice(-1).pop().trim(),
-		time: new Date(value.time * 1000),
-		
-		uin: value.from_uin,
-		uid: value.msg_id
 	};
 	switch (msg.type) {
-		case 'friend': 
-			msg.user = getFriend(msg.from_uin);
-			break;
 		case 'group':
-			//msg.group = Userfetch.getGroup(session, 'code', value.group_code);
-			msg.user = Userfetch.getGroupMember(session, value.group_code, msg.uin);
-			break;
+			msg.gid = value.from_uin;
+			msg.gcode = value.group_code;
+			msg.uin = value.send_uin;
+
+			msg.group = Infocache.getGroupInfo(msg.gcode);
+			msg.user = Infocache.getGroupMember(msg.gcode, msg.uin);
+
+			return (msg.group && msg.user) ? msg : false;
 	}
-	return msg;
 }
 
-function processEvent() {
-	
+function processEvent(session, event) {
+	switch (event.poll_type) {
+		case 'message': case 'group_message':
+			var message = createMessage(session, event);
+			if (message)
+				log.info('[' + ({ 'friend': '好友消息', 'group': '群消息' })[message.type] + '] ' + message.user.nick + ': ' + message.content);
+	}
 }
 module.exports.process = processEvent;
 
