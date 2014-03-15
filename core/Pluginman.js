@@ -3,16 +3,19 @@ var log = new (require('Log'))('debug');
 var pluginList;
 
 
-function dispatchEvent(handlerId, event) {
-	for (var key in pluginList)
-		try {
-			if (pluginList[key].doEvent[handlerId])
-				if (pluginList[key].doEvent[handlerId]() === 3)
-					break; // Exit when return 3 (Message handled)
-		} catch (error) {
-			log.info('<Pluginman> 插件處理事件時產生了未處理的異常 (p=' + pluginList[key]._id + '): ' + error);
-		}
+function dispatchEvent(handlerId, session, event, reply) {
+	for (var key in pluginList) {
+		if (pluginList[key].doEvent)
+			if (handlerId in pluginList[key].doEvent)
+				if (pluginList[key].doEvent[handlerId](session, event, reply) === 3)
+					break;
+				else ;
+			else ;
+		else
+			log.error('<Pluginman> Bad implementation of plugin (p=' + pluginList[key]._id + ')');
+	}
 }
+module.exports.dispatchEvent = dispatchEvent;
 
 function loadPlugin(filepath) {
 	log.info('<Pluginman> 從檔案裝入插件 ' + filepath);

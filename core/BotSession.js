@@ -13,7 +13,8 @@ var api = require('./qqapi2');
 var Bootloader = require('./../Bootloader');
 var fs = require('fs');
 var Infocache = require('./Infocache');
-var log = new (require('Log'))('debug');
+var log = new (require('Log'))('debug')
+var moment = require('moment');
 var Pluginman = require('./Pluginman');
 
 var BotSession = function (_auth, _cookies, _config) {
@@ -31,9 +32,11 @@ var BotSession = function (_auth, _cookies, _config) {
 BotSession.prototype.start = function () {
 	var that = this;
 	
+	that.launchtime = moment();
 	log.info('<BotSession> 開始讀入好友列表');
 	Pluginman.loadPluginList(that.config.plugins);
 	Infocache.setSession(that);
+	process.title = 'Nekobot v2 Console';
 	api.poll2(that.auth, function (ret, error) {
 		poll_handle(that, ret, error);
 	});

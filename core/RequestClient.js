@@ -49,7 +49,7 @@ function doRequest(options, postform, callback) {
 		});
 	});
 	q.on("error", function(error) {
-		callback(null, e); // 回傳請求錯誤資訊
+		callback(null, error); // 回傳請求錯誤資訊
 	});
 	if (postform && options.method === 'POST') {
 		q.write(data);

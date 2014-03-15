@@ -1,5 +1,5 @@
 ﻿var api = require('./qqapi2');
-var fs = require('fs');
+var fs = require('fs'); // For JSON output test
 var log = new (require('Log'))('debug');
 
 var listFriend, listGroup, listGroupInfo, session;
@@ -76,7 +76,7 @@ function refreshFriend(auth, callback) {
 					ret.result.info.filter(function (element) {
 						listFriend[element.uin] = element;
 					});
-					
+
 					callback2(true, null);
 				} else
 					callback2(false, 'retcode != 0 [' + ret.retcode + ']');
