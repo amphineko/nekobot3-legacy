@@ -1,0 +1,21 @@
+{
+	"name": "nekobot",
+	"description": "Simple QQBot based on WebQQ Protocol",
+	"author": {
+		"name": "Amphineko",
+		"email": "i@futa.pw"
+	},
+	
+	"repository": {
+		"type": "git",
+		"url": "http://github.com/amphineko/nekobot.git"
+	},
+	
+	"dependencies": {
+		"scoped-http-client": ">= 0.9.8",
+		"log":                ">= 1.4.0",
+		"moment":             ">= 2.5.1",
+		"request":            ">= 2.33.0",
+		"js-yaml" :           ">= 3.0.0"
+	}
+}
