@@ -1,3 +1,10 @@
+/*
+	Nekobot v2 / Core
+	
+	@package  pw.futa.nekobot.core.eventadapter
+	@author   Amphineko (Naoki Rinmous)
+*/
+
 var api = require('./qqapi2');
 var Infocache = require('./Infocache');
 var log = new (require('Log'))('debug');
@@ -51,11 +58,11 @@ function processEvent(session, event) {
 						};
 						break;
 				}
-				Pluginman.dispatchEvent('message', session, message, reply);
+				sendProcess('message', session, message, reply);
+				//Pluginman.dispatchEvent('message', session, message, reply);
 			}
 			break;
 	}
 }
 module.exports.process = processEvent;
-
 
